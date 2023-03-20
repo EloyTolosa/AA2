@@ -1,8 +1,10 @@
-/*
+    /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  */
 
 package aa24;
+
+import aa24.View.View;
 
 /**
  *
@@ -11,6 +13,6 @@ package aa24;
 public class AA24 {
 
     public static void main(String[] args) {
-        System.out.println("Hello World!");
+        new View("NxN solver");
     }
 }
