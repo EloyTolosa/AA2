@@ -29,9 +29,8 @@ public class Cell extends JPanel {
     private static int CELL_INIT_X = 0;
     private static int CELL_INIT_Y = View.TOOL_BAR_HEIGHT;
 
-    private Piece piece;
     private int row, col;
-    private int order;
+    private PieceType pt;
     
     public Cell() {
         super();
@@ -39,15 +38,15 @@ public class Cell extends JPanel {
 
     public Cell(int number) {
         super();
-        this.order = 0;
 
         this.row = number / View.DIMENSION;
         this.col = number % View.DIMENSION;
         this.setBounds(this.col*CELL_WIDTH + CELL_INIT_X, this.row*CELL_HEIGHT + CELL_INIT_Y, CELL_WIDTH, CELL_HEIGHT);
     }
-
-    public void setPiece(Piece p) { this.piece = p; }
-    public Piece getPiece() { return this.piece; }
+    
+    public void addPiece(PieceType pt) {
+        this.pt = pt; 
+    }
 
     @Override
     protected void paintComponent(Graphics g) {
@@ -62,10 +61,10 @@ public class Cell extends JPanel {
         }
 
         /** PAINT PIECE IMAGE */
-        if (piece != null) {
+        if (this.pt != null) {
             try {
                 Image image;
-                image = ImageIO.read(new File(this.piece.pt.toString())).
+                image = ImageIO.read(new File(this.pt.toString())).
                     getScaledInstance(
                         (int) (0.8*CELL_WIDTH),
                         (int) (0.8*CELL_HEIGHT),

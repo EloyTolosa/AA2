@@ -11,8 +11,9 @@ import aa24.View.View;
  * @author toloy
  */
 public class AA24 {
-
+    
     public static void main(String[] args) {
-        new View("NxN solver");
+        new View("NxN SOLVER");
     }
+
 }

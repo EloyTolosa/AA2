@@ -16,10 +16,11 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
 
+import aa24.Controller.Comunicable;
 import aa24.Model.Piece.Piece;
 import aa24.Model.Piece.PieceType;
 
-public class View {
+public class View implements Comunicable {
 
     /** GUI COMPONENTS */
     private JFrame window;
@@ -28,22 +29,21 @@ public class View {
 
     private JPanel panel;
 
-    public Cell[] board;
-    public ArrayList<Piece> pieces = new ArrayList<Piece>();
-
+    public static Cell[] BOARD;
 
     /** PROGRAM VARIABLES */
     public static int DIMENSION = 8;
+    public static int AVAILABLE_CELLS = DIMENSION*DIMENSION;
 
     /** STATIC VARIABLES */
     public static int WINDOW_WIDTH = 1000;
     public static int WINDOW_HEIGHT = 1000;
 
     public static int PANEL_WIDHT = WINDOW_WIDTH;
-    public static int PANEL_HEIGHT = (int) ( 0.92 * WINDOW_HEIGHT);
+    public static int PANEL_HEIGHT = (int) ( 0.93 * WINDOW_HEIGHT);
 
     public static int TOOL_BAR_WIDTH = WINDOW_WIDTH;
-    public static int TOOL_BAR_HEIGHT = (int) (0.08 * WINDOW_HEIGHT);
+    public static int TOOL_BAR_HEIGHT = (int) (0.07 * WINDOW_HEIGHT);
 
     public View(String title) {
 
@@ -63,20 +63,20 @@ public class View {
 
         panel.add(toolBar);
 
-        board = new Cell[DIMENSION*DIMENSION];
-        for (int i = 0; i < board.length; i++) {
-            board[i] = new Cell(i);
-            panel.add(board[i]);
+        BOARD = new Cell[DIMENSION*DIMENSION];
+        for (int i = 0; i < BOARD.length; i++) {
+            BOARD[i] = new Cell(i);
+            panel.add(BOARD[i]);
         }
 
         /*************************************** */
         /** ONLY FOR TEST PURPOSES. REMOVE LATER */
 
         /** ADD KNIGHT INTO BOARD */
-        board[3].setPiece(Piece.New(PieceType.KNIGHT));
+        BOARD[3].addPiece(PieceType.KNIGHT);
         /** ADD PIECE INTO PIECES LIST */
-        pieces.add(board[3].getPiece());
-        /*************************************** */
+/*         PIECES.add(BOARD[3].getPiece());
+ */        /*************************************** */
 
         window.getContentPane().add(panel);
 
@@ -86,6 +86,12 @@ public class View {
         window.setVisible(true);
         window.setResizable(false);
 
+    }
+
+    @Override
+    public void comunicate(Object... data) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'comunicate'");
     }
     
 }

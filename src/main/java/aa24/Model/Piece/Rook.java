@@ -2,17 +2,20 @@ package aa24.Model.Piece;
 
 public class Rook extends Piece {
 
-    public Rook() {}
+    public Rook() {
+        super();
+        setPieceType(PieceType.ROOK);
+    }
 
     public Rook(int row, int col) {
         super(row, col);
-        this.pt = PieceType.ROOK;
+        setPieceType(PieceType.ROOK);
     }
 
     @Override
-    public void move() {
+    public Movement[] getMovements() {
         // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'move'");
+        throw new UnsupportedOperationException("Unimplemented method 'getMovements'");
     }
     
 }
