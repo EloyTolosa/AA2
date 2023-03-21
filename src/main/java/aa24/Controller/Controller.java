@@ -14,8 +14,28 @@ public class Controller implements Comunicable {
 
     @Override
     public void comunicate(Object... data) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'comunicate'");
+
+        if (this.model == null) {
+            this.model = new Model(this);
+        }
+
+        Action a = (Action) data[0];
+        switch (a) {
+            case START:
+                
+                
+                Thread t = new Thread(this.model);
+                t.start();
+
+                break;
+
+            case ADD_PIECE:
+
+                this.model.comunicate(data);
+        
+            default:
+                break;
+        }
     }
     
 }

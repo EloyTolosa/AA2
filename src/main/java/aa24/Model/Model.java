@@ -2,11 +2,13 @@ package aa24.Model;
 
 import java.util.ArrayList;
 
+import aa24.Controller.Action;
 import aa24.Controller.Comunicable;
 import aa24.Controller.Controller;
 import aa24.Model.Board.Board;
 import aa24.Model.Piece.Movement;
 import aa24.Model.Piece.Piece;
+import aa24.Model.Piece.PieceType;
 import aa24.View.View;
 
 public class Model implements Comunicable, Runnable {
@@ -14,6 +16,8 @@ public class Model implements Comunicable, Runnable {
     public static Board BOARD;
 
     private static ArrayList<Piece> PIECES = new ArrayList<Piece>();
+    private static int AVAILABLE_CELLS = View.DIMENSION*View.DIMENSION;
+    private final static int MAX_CELLS = AVAILABLE_CELLS;
 
     private Controller controller;
 
@@ -22,9 +26,34 @@ public class Model implements Comunicable, Runnable {
         BOARD = new Board(View.DIMENSION);
     }
 
+    public void addPiece(PieceType pt, int position) {
+        Piece p = Piece.New(pt, position);
+        PIECES.add(p);
+        p.setId(PIECES.size());
+        BOARD.at(p.row, p.col).set(p, 1);
+        AVAILABLE_CELLS--;
+    }
+
     private static void move(Piece p, Movement m) {
         
+/*         BOARD.at(p.row, p.col).setPiece(null);
+ */        
+        /** This is to maintain coherence when more than one
+         * piece is in the board
+        */
+        int previousOrder = BOARD.at(p.row, p.col).getOrder(); 
         p.move(m);
+        AVAILABLE_CELLS--;
+        BOARD.at(p.row, p.col).set(p, previousOrder+1);
+
+    }
+
+    private static void remove(Piece p, Movement m) {
+
+        BOARD.at(p.row, p.col).empty();
+        p.undo(m);
+        AVAILABLE_CELLS++;
+        BOARD.at(p.row, p.col).setPiece(p);
 
     }
 
@@ -47,6 +76,8 @@ public class Model implements Comunicable, Runnable {
      */
     private static int Backtrack(int start) {
 
+/*         System.out.println("Backtrack: "+AVAILABLE_CELLS);
+ */
         Piece p = PIECES.get(start);
         Movement[] movements = p.getMovements();
 
@@ -54,7 +85,7 @@ public class Model implements Comunicable, Runnable {
          * If not, finish Backtrack
          * Else, check movements
          */
-        if ( View.AVAILABLE_CELLS == 0 ) {
+        if ( AVAILABLE_CELLS == 0 ) {
             return 1;
         }
 
@@ -62,7 +93,8 @@ public class Model implements Comunicable, Runnable {
             
             /** if movement is valid, move the piece and continue with next one */
             if (p.isValid(m)) {
-                p.move(m);
+                
+                move(p, m);
 
                 /** Check following piece solution.
                  * If the following piece has finished backtracking, this means we
@@ -76,6 +108,11 @@ public class Model implements Comunicable, Runnable {
                  * backtrack had a good solution.
                  */
                 if ( sol == -1 ) {
+
+                    /** We have to remove the last movement if the backtrag did not find any
+                     * good solutions and continue */
+                    remove(p, m);
+
                     continue;
                 } else {
                     return 1;
@@ -98,14 +135,36 @@ public class Model implements Comunicable, Runnable {
 
     @Override
     public void comunicate(Object... data) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'comunicate'");
+
+        Action a = (Action) data[0];
+        switch (a) {
+            case ADD_PIECE:
+                
+                PieceType pt = (PieceType) data[1];
+                int position = (int) data[2];
+                addPiece(pt, position);
+
+                break;
+        
+            default:
+                break;
+        }
+        
     }
 
     @Override
     public void run() {
 
-        Backtrack(0);
+        /** If backtrack runs successfully, print the board */
+        int b = Backtrack(0);
+        if ( b == 1 ) {
+            
+            System.out.println(BOARD);
+
+        } 
+        else if ( b == -1 ){
+            System.out.println("This board configuration has no solution");
+        }
 
     }
     

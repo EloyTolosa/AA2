@@ -10,14 +10,15 @@ package aa24.View;
  */
 
 import java.awt.Dimension;
-import java.util.ArrayList;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
 
 import aa24.Controller.Comunicable;
-import aa24.Model.Piece.Piece;
+import aa24.Controller.Controller;
+import aa24.Controller.Action;
 import aa24.Model.Piece.PieceType;
 
 public class View implements Comunicable {
@@ -29,21 +30,30 @@ public class View implements Comunicable {
 
     private JPanel panel;
 
+    private JButton startButton;
+
     public static Cell[] BOARD;
 
     /** PROGRAM VARIABLES */
-    public static int DIMENSION = 8;
-    public static int AVAILABLE_CELLS = DIMENSION*DIMENSION;
+    public static int DIMENSION = 5;
+
+    public Controller controller = new Controller(this);
 
     /** STATIC VARIABLES */
     public static int WINDOW_WIDTH = 1000;
     public static int WINDOW_HEIGHT = 1000;
+
+    public static int START_X = 0;
+    public static int START_Y = 0;
 
     public static int PANEL_WIDHT = WINDOW_WIDTH;
     public static int PANEL_HEIGHT = (int) ( 0.93 * WINDOW_HEIGHT);
 
     public static int TOOL_BAR_WIDTH = WINDOW_WIDTH;
     public static int TOOL_BAR_HEIGHT = (int) (0.07 * WINDOW_HEIGHT);
+
+    public static int START_BUTTON_WIDTH = TOOL_BAR_WIDTH / 6;
+    public static int START_BUTTON_HEIGHT = TOOL_BAR_HEIGHT;
 
     public View(String title) {
 
@@ -61,6 +71,14 @@ public class View implements Comunicable {
         toolBar.setBounds(0,0, TOOL_BAR_WIDTH, TOOL_BAR_HEIGHT);
         toolBar.setFloatable(false);
 
+        startButton = new JButton("Run");
+        startButton.setBounds(START_X + START_BUTTON_WIDTH*5, START_Y, START_BUTTON_WIDTH, START_BUTTON_WIDTH);
+        startButton.addActionListener((al) -> {
+            controller.comunicate(Action.START);
+        });
+
+        toolBar.add(startButton);
+
         panel.add(toolBar);
 
         BOARD = new Cell[DIMENSION*DIMENSION];
@@ -73,7 +91,17 @@ public class View implements Comunicable {
         /** ONLY FOR TEST PURPOSES. REMOVE LATER */
 
         /** ADD KNIGHT INTO BOARD */
-        BOARD[3].addPiece(PieceType.KNIGHT);
+        int position = 12;
+        BOARD[position].addPiece(PieceType.KNIGHT);
+        controller.comunicate(Action.ADD_PIECE, PieceType.KNIGHT, position);
+
+        position = 10;
+        BOARD[position].addPiece(PieceType.KNIGHT);
+        controller.comunicate(Action.ADD_PIECE, PieceType.KNIGHT, position);
+
+        position = 4;
+        BOARD[position].addPiece(PieceType.KNIGHT);
+        controller.comunicate(Action.ADD_PIECE, PieceType.KNIGHT, position);
         /** ADD PIECE INTO PIECES LIST */
 /*         PIECES.add(BOARD[3].getPiece());
  */        /*************************************** */
@@ -90,8 +118,7 @@ public class View implements Comunicable {
 
     @Override
     public void comunicate(Object... data) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'comunicate'");
+        
     }
     
 }

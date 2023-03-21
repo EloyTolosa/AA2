@@ -64,7 +64,7 @@ public class Cell extends JPanel {
         if (this.pt != null) {
             try {
                 Image image;
-                image = ImageIO.read(new File(this.pt.toString())).
+                image = ImageIO.read(new File(this.pt.path())).
                     getScaledInstance(
                         (int) (0.8*CELL_WIDTH),
                         (int) (0.8*CELL_HEIGHT),
