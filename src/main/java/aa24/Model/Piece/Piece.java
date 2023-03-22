@@ -41,6 +41,10 @@ public abstract class Piece {
         return this.pt;
     }
 
+    public int getId() {
+        return this.id;
+    }
+
     public abstract Movement[] getMovements();
 
     // Generic move function. It works for all piece types

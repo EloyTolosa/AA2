@@ -1,7 +1,5 @@
 package aa24.Model.Board;
 
-import java.awt.Dimension;
-
 public class Board {
 
     public Cell[] cells;

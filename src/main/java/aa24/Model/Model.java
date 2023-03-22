@@ -30,7 +30,7 @@ public class Model implements Comunicable, Runnable {
         Piece p = Piece.New(pt, position);
         PIECES.add(p);
         p.setId(PIECES.size());
-        BOARD.at(p.row, p.col).set(p, 1);
+        BOARD.at(p.row, p.col).set(p, PIECES.size());
         AVAILABLE_CELLS--;
     }
 
@@ -41,7 +41,7 @@ public class Model implements Comunicable, Runnable {
         /** This is to maintain coherence when more than one
          * piece is in the board
         */
-        int previousOrder = BOARD.at(p.row, p.col).getOrder(); 
+        int previousOrder = MAX_CELLS - AVAILABLE_CELLS;/** BOARD.at(p.row, p.col).getOrder(); */
         p.move(m);
         AVAILABLE_CELLS--;
         BOARD.at(p.row, p.col).set(p, previousOrder+1);
@@ -145,6 +145,14 @@ public class Model implements Comunicable, Runnable {
                 addPiece(pt, position);
 
                 break;
+
+            case CLEAR:
+
+                PIECES = new ArrayList<Piece>();
+                BOARD = new Board(View.DIMENSION);
+                AVAILABLE_CELLS = MAX_CELLS;
+
+                break;
         
             default:
                 break;
@@ -160,10 +168,13 @@ public class Model implements Comunicable, Runnable {
         if ( b == 1 ) {
             
             System.out.println(BOARD);
+            controller.comunicate(Action.PAINT_SOLUTION, BOARD);
 
         } 
         else if ( b == -1 ){
-            System.out.println("This board configuration has no solution");
+            
+            controller.comunicate(Action.ALERT, "This board configuration has no solution");
+
         }
 
     }

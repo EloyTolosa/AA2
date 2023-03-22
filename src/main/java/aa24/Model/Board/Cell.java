@@ -26,6 +26,10 @@ public class Cell {
         return order;
     }
 
+    public int getId() {
+        return piece.getId();
+    }
+
     public void set(Piece p, int order) {
         this.piece = p;
         this.visited = true;

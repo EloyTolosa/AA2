@@ -29,11 +29,13 @@ public class Controller implements Comunicable {
 
                 break;
 
-            case ADD_PIECE:
+            case CLEAR, ADD_PIECE:
 
                 this.model.comunicate(data);
-        
-            default:
+
+            case ALERT, PAINT_SOLUTION:
+
+                this.view.comunicate(data);
                 break;
         }
     }
