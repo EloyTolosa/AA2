@@ -163,18 +163,16 @@ public class Model implements Comunicable, Runnable {
     @Override
     public void run() {
 
-        /** If backtrack runs successfully, print the board */
+        if (PIECES.size() == 0) {
+            controller.comunicate(Action.ALERT, "You cannot run before adding a piece first.");
+            return;
+        }
+
         int b = Backtrack(0);
         if ( b == 1 ) {
-            
-            System.out.println(BOARD);
             controller.comunicate(Action.PAINT_SOLUTION, BOARD);
-
-        } 
-        else if ( b == -1 ){
-            
+        } else {
             controller.comunicate(Action.ALERT, "This board configuration has no solution");
-
         }
 
     }

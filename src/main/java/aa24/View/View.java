@@ -13,6 +13,7 @@ import java.awt.Dimension;
 import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -26,7 +27,6 @@ import javax.swing.SwingConstants;
 import aa24.Controller.Comunicable;
 import aa24.Controller.Controller;
 import aa24.Controller.Action;
-import aa24.Model.Model;
 import aa24.Model.Board.Board;
 import aa24.Model.Piece.PieceType;
 
@@ -39,7 +39,8 @@ public class View implements Comunicable {
 
     private JPanel panel;
 
-    private JButton startButton, queenButton, rookButton, knightButton, clearButton;
+    private JButton startButton, clearButton;
+    private ArrayList<JButton> pieceButtons = new ArrayList<>();
 
     public static Cell[] BOARD;
 
@@ -94,7 +95,9 @@ public class View implements Comunicable {
         makeToolBarButtons();
 
         toolBar.add(startButton);
-        toolBar.add(knightButton);
+        for (JButton button : pieceButtons) {
+            toolBar.add(button);
+        }
         toolBar.add(clearButton);
 
         panel.add(toolBar);
@@ -146,7 +149,7 @@ public class View implements Comunicable {
 
         clearButton = new JButton("Clear Board");
         clearButton.setHorizontalAlignment(SwingConstants.HORIZONTAL);
-        clearButton.setBounds(START_X + PIECE_BUTTON_WIDTH*6, START_Y, PIECE_BUTTON_WIDTH, PIECE_BUTTON_HEIGHT);
+        clearButton.setBounds(START_X + PIECE_BUTTON_WIDTH*8, START_Y, 2*PIECE_BUTTON_WIDTH, PIECE_BUTTON_HEIGHT);
         clearButton.addActionListener((al) -> {
 
             /** Clear board */
@@ -168,30 +171,33 @@ public class View implements Comunicable {
             controller.comunicate(Action.START);
         });
 
-        knightButton = new JButton();
-        knightButton.setHorizontalAlignment(SwingConstants.CENTER);
-        knightButton.setBounds(START_X + PIECE_BUTTON_WIDTH*2, START_Y, PIECE_BUTTON_WIDTH, PIECE_BUTTON_HEIGHT);
-        System.out.println(knightButton.getBounds());
-    /*         knightButton.setPreferredSize(new Dimension(PIECE_BUTTON_WIDTH, PIECE_BUTTON_HEIGHT));
- */        try {
-            knightButton.setIcon(new ImageIcon(ImageIO.read(new File(PieceType.KNIGHT.path())).
+        newPieceButton(PieceType.QUEEN);
+        newPieceButton(PieceType.ROOK);
+        newPieceButton(PieceType.KNIGHT);
+        newPieceButton(PieceType.CRAB);
+        newPieceButton(PieceType.SHEEP);
+
+    }
+
+    public void newPieceButton(PieceType pt) {
+        JButton button = new JButton();
+        pieceButtons.add(button);
+
+        button.setHorizontalAlignment(SwingConstants.CENTER);
+        button.setBounds(START_X + PIECE_BUTTON_WIDTH*(pieceButtons.size()), START_Y, PIECE_BUTTON_WIDTH, PIECE_BUTTON_HEIGHT);
+        try {
+            button.setIcon(new ImageIcon(ImageIO.read(new File(pt.path())).
                 getScaledInstance(
-                    (int) (0.8 * knightButton.getWidth()),
-                    (int) (0.8 * knightButton.getHeight()),
+                    (int) (0.8 * button.getWidth()),
+                    (int) (0.8 * button.getHeight()),
                     Image.SCALE_DEFAULT)));
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
 
-        knightButton.addActionListener((al) -> {
-
-            this.selectedPiece = PieceType.KNIGHT;
-
-            /* int position = 0;
-            controller.comunicate(Action.ADD_PIECE, PieceType.KNIGHT, position); */
+        button.addActionListener((al) -> {
+            this.selectedPiece = pt;
         });
-
-
     }
 
     private void alert(String message) {

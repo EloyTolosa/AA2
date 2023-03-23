@@ -36,6 +36,10 @@ public class Cell {
         this.order = order;
     }
 
+    public boolean isEmpty() {
+        return piece == null;
+    }
+
     public void empty() {
         this.piece = null;
         this.visited = false;

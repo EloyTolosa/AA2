@@ -5,9 +5,7 @@ public enum PieceType {
         @Override
         public String path() {
             return "./src/images/bkn.png";
-        }
-
-        
+        } 
     }, 
     QUEEN {
         @Override
@@ -19,6 +17,18 @@ public enum PieceType {
         @Override
         public String path() {
             return "./src/images/brk.png";
+        }
+    },
+    CRAB {
+        @Override
+        public String path() {
+            return "./src/images/crab.png";
+        }
+    },
+    SHEEP {
+        @Override
+        public String path() {
+            return "./src/images/sheep.png";
         }
     };
 

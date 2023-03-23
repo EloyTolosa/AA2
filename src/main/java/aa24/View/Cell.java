@@ -125,9 +125,7 @@ public class Cell extends JPanel implements MouseListener {
             float b = rand.nextFloat();
 
             /** Paint the number transparent so we can follow the pieces order */
-            if ( this.pt != null ) {
-                g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f));
-            }
+            g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.8f));
 
 
             g2d.setColor(new Color(r,g,b));
@@ -148,6 +146,10 @@ public class Cell extends JPanel implements MouseListener {
                 Graphics2D g2d = (Graphics2D) gg;
                 int x = (this.getWidth() - image.getWidth(null)) / 2;
                 int y = (this.getHeight() - image.getHeight(null)) / 2;
+
+                if ( this.id != 0 ) {
+                    g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f));
+                }
 
                 g2d.drawImage(image, x, y, null);
 

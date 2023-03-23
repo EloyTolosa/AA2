@@ -9,9 +9,12 @@ public abstract class Piece {
     private int id; /** to differentiate between same pieces */
     public int row, col;
 
-    public Piece() {}
+    public Piece(PieceType pt) {
+        this.pt = pt;
+    }
 
-    public Piece(int row, int col) { 
+    public Piece(PieceType pt, int row, int col) { 
+        this.pt = pt;
         this.row = row;
         this.col = col;
     }
@@ -23,15 +26,29 @@ public abstract class Piece {
      * @param m
      * @return
      */
-    public boolean isValid(Movement m) {
+    public abstract boolean isValid(Movement m);
+
+    public boolean outOfBounds(Movement m) {
         int newRow = this.row + m.y;
+        int newCol = this.col + m.x;
+        return ( newRow > View.DIMENSION - 1 ) ||
+            ( newRow < 0) ||
+            ( newCol > View.DIMENSION -1 ) ||
+            ( newCol < 0);
+    }
+
+    public boolean visited(Movement m) {
+        int newRow = this.row + m.y;
+        int newCol = this.col + m.x;
+        return Model.BOARD.at(newRow, newCol).visited();
+    }
+        /* int newRow = this.row + m.y;
         int newCol = this.col + m.x;
         return ( newRow <= View.DIMENSION - 1 ) &&
             ( newRow >= 0) &&
             ( newCol <= View.DIMENSION -1 ) &&
             ( newCol >= 0) &&
-            ( !Model.BOARD.at(newRow, newCol).visited() );
-    }
+            ( !Model.BOARD.at(newRow, newCol).visited() ); */
 
     public void setPieceType(PieceType pt) {
         this.pt = pt;
@@ -66,6 +83,10 @@ public abstract class Piece {
                 return new Queen();
             case ROOK:
                 return new Rook();
+            case CRAB:
+                return new Crab();
+            case SHEEP:
+                return new Sheep();
         }
         return null;
     }
@@ -80,6 +101,10 @@ public abstract class Piece {
                 return new Queen(row, col);
             case ROOK:
                 return new Rook(row, col);
+            case CRAB:
+                return new Crab(row, col);
+            case SHEEP:
+                return new Sheep(row, col);
         }
         return null;
     }

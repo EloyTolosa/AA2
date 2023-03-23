@@ -1,15 +1,16 @@
 package aa24.Model.Piece;
 
-public class Knight extends Piece {
+import aa24.Model.Model;
+import aa24.View.View;
+
+public class Knight extends JumpingPiece {
 
     public Knight() {
-        super();
-        setPieceType(PieceType.KNIGHT);
+        super(PieceType.KNIGHT);
     }
 
     public Knight(int row, int col) {
-        super(row, col);
-        setPieceType(PieceType.KNIGHT);
+        super(PieceType.KNIGHT, row, col);
     }
 
     @Override
