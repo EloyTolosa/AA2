@@ -15,7 +15,7 @@ public class Model implements Comunicable, Runnable {
 
     public static Board BOARD;
 
-    private static ArrayList<Piece> PIECES = new ArrayList<Piece>();
+    private ArrayList<Piece> pieces = new ArrayList<Piece>();
     private static int AVAILABLE_CELLS = View.DIMENSION*View.DIMENSION;
     private final static int MAX_CELLS = AVAILABLE_CELLS;
 
@@ -26,18 +26,16 @@ public class Model implements Comunicable, Runnable {
         BOARD = new Board(View.DIMENSION);
     }
 
-    public void addPiece(PieceType pt, int position) {
+    private void addPiece(PieceType pt, int position) {
         Piece p = Piece.New(pt, position);
-        PIECES.add(p);
-        p.setId(PIECES.size());
-        BOARD.at(p.row, p.col).set(p, PIECES.size());
+        pieces.add(p);
+        p.setId(pieces.size());
+        BOARD.at(p.row, p.col).set(p, pieces.size());
         AVAILABLE_CELLS--;
     }
 
     private static void move(Piece p, Movement m) {
         
-/*         BOARD.at(p.row, p.col).setPiece(null);
- */        
         /** This is to maintain coherence when more than one
          * piece is in the board
         */
@@ -48,7 +46,7 @@ public class Model implements Comunicable, Runnable {
 
     }
 
-    private static void remove(Piece p, Movement m) {
+    private void remove(Piece p, Movement m) {
 
         BOARD.at(p.row, p.col).empty();
         p.undo(m);
@@ -72,13 +70,13 @@ public class Model implements Comunicable, Runnable {
      * be executed for the next piece, recursively.
      * @param start The starting point. 0 means the first piece, 1 the second, 
      * and so on.
-     * @return
+     * @return an integer indicating if the board had a solution. If the function returns 1
+     * it means that the board had a solution. If the function returns -1, 
+     * it means the contrary.
      */
-    private static int Backtrack(int start) {
+    private int backtrack(int pieceNumber) {
 
-/*         System.out.println("Backtrack: "+AVAILABLE_CELLS);
- */
-        Piece p = PIECES.get(start);
+        Piece p = pieces.get(pieceNumber);
         Movement[] movements = p.getMovements();
 
         /** Check if board has available cells first
@@ -100,7 +98,8 @@ public class Model implements Comunicable, Runnable {
                  * If the following piece has finished backtracking, this means we
                  * had a correct solution. Otherwise, not.
                  */
-                int sol = Backtrack((start+1)%PIECES.size()); // modulo operator to go around the clock
+                int pn = (pieceNumber+1)%pieces.size();
+                int sol = backtrack(pn); // modulo operator to go around the clock
 
                 /** If the following backtrack did not have a good solution, we need to follow with the
                  * next movement.
@@ -112,7 +111,6 @@ public class Model implements Comunicable, Runnable {
                     /** We have to remove the last movement if the backtrag did not find any
                      * good solutions and continue */
                     remove(p, m);
-
                     continue;
                 } else {
                     return 1;
@@ -148,7 +146,7 @@ public class Model implements Comunicable, Runnable {
 
             case CLEAR:
 
-                PIECES = new ArrayList<Piece>();
+                pieces = new ArrayList<Piece>();
                 BOARD = new Board(View.DIMENSION);
                 AVAILABLE_CELLS = MAX_CELLS;
 
@@ -163,12 +161,12 @@ public class Model implements Comunicable, Runnable {
     @Override
     public void run() {
 
-        if (PIECES.size() == 0) {
+        if (pieces.size() == 0) {
             controller.comunicate(Action.ALERT, "You cannot run before adding a piece first.");
             return;
         }
 
-        int b = Backtrack(0);
+        int b = backtrack(0);
         if ( b == 1 ) {
             controller.comunicate(Action.PAINT_SOLUTION, BOARD);
         } else {

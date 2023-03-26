@@ -5,9 +5,6 @@ import aa24.View.View;
 
 public class Knight extends JumpingPiece {
 
-    public Knight() {
-        super(PieceType.KNIGHT);
-    }
 
     public Knight(int row, int col) {
         super(PieceType.KNIGHT, row, col);

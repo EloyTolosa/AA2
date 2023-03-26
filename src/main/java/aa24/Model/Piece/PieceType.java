@@ -30,6 +30,12 @@ public enum PieceType {
         public String path() {
             return "./src/images/sheep.png";
         }
+    },
+    SNAKE {
+        @Override
+        public String path() {
+            return "./src/images/snake.png";
+        }
     };
 
     public abstract String path();

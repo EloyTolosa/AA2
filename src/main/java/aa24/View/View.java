@@ -90,7 +90,6 @@ public class View implements Comunicable {
         toolBar.setLayout(null);
         toolBar.setBounds(0,0, TOOL_BAR_WIDTH, TOOL_BAR_HEIGHT);
         toolBar.setFloatable(false);
-
         
         makeToolBarButtons();
 
@@ -107,25 +106,6 @@ public class View implements Comunicable {
             BOARD[i] = new Cell(i, this);
             panel.add(BOARD[i]);
         }
-
-        /*************************************** */
-        /** ONLY FOR TEST PURPOSES. REMOVE LATER */
-
-        /** ADD KNIGHT INTO BOARD */
-        /* int position = 12;
-        BOARD[position].addPiece(PieceType.KNIGHT);
-        controller.comunicate(Action.ADD_PIECE, PieceType.KNIGHT, position);
-
-        position = 10;
-        BOARD[position].addPiece(PieceType.KNIGHT);
-        controller.comunicate(Action.ADD_PIECE, PieceType.KNIGHT, position);
-
-        position = 4;
-        BOARD[position].addPiece(PieceType.KNIGHT);
-        controller.comunicate(Action.ADD_PIECE, PieceType.KNIGHT, position); */
-        /** ADD PIECE INTO PIECES LIST */
-/*         PIECES.add(BOARD[3].getPiece());
- */        /*************************************** */
 
         window.getContentPane().add(panel);
 
@@ -176,6 +156,7 @@ public class View implements Comunicable {
         newPieceButton(PieceType.KNIGHT);
         newPieceButton(PieceType.CRAB);
         newPieceButton(PieceType.SHEEP);
+        newPieceButton(PieceType.SNAKE);
 
     }
 

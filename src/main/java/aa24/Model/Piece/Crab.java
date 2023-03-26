@@ -2,10 +2,6 @@ package aa24.Model.Piece;
 
 public class Crab extends JumpingPiece {
 
-    public Crab() {
-        super(PieceType.CRAB);
-    }
-
     public Crab(int row, int col) {
         super(PieceType.CRAB, row, col);
     }

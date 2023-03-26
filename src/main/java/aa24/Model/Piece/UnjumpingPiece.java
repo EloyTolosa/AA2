@@ -2,10 +2,6 @@ package aa24.Model.Piece;
 
 public abstract class UnjumpingPiece extends Piece {
 
-    public UnjumpingPiece(PieceType pt) {
-        super(pt);
-    }
-
     public UnjumpingPiece(PieceType pt, int row, int col) {
         super(pt, row, col);
     }

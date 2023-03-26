@@ -2,10 +2,6 @@ package aa24.Model.Piece;
 
 public class Sheep extends JumpingPiece {
 
-    public Sheep() {
-        super(PieceType.SHEEP);
-    }
-
     public Sheep(int row, int col) {
         super(PieceType.SHEEP, row, col);
     }

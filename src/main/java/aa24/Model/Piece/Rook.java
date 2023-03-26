@@ -2,10 +2,6 @@ package aa24.Model.Piece;
 
 public class Rook extends UnjumpingPiece {
 
-    public Rook() {
-        super(PieceType.ROOK);
-    }
-
     public Rook(int row, int col) {
         super(PieceType.ROOK, row, col);
     }
